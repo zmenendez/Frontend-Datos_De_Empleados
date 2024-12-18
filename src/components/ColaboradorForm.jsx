@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { addColaborador, updateColaborador } from '../api/colaboradorApi';
 
+//Componente de formulario para agregar o editar un colaborador.
 const ColaboradorForm = ({ onSuccess, colaboradorSeleccionado, limpiarSeleccion }) => {
+  // Estado para manejar los datos del formulario
   const [form, setForm] = useState({
     nombre: '',
     apellido: '',
@@ -12,7 +14,7 @@ const ColaboradorForm = ({ onSuccess, colaboradorSeleccionado, limpiarSeleccion 
     estadoCivil: '',
   });
 
-  // Cargar datos del colaborador seleccionado
+  // Cargar datos del colaborador seleccionado al montar el componente o cambiar la selección
   useEffect(() => {
     if (colaboradorSeleccionado) {
       setForm({
@@ -35,15 +37,21 @@ const ColaboradorForm = ({ onSuccess, colaboradorSeleccionado, limpiarSeleccion 
     }
   }, [colaboradorSeleccionado]);
 
+//Maneja los cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
+  /**
+   * Maneja el envío del formulario.
+   * Valida la edad y llama a la API para agregar o actualizar el colaborador.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { nombre, apellido, edad } = form;
 
+    // Validación de la edad
     if (edad <= 17) {
       toast.error('Edad debe ser mayor o igual a 18.');
       return;
@@ -60,10 +68,11 @@ const ColaboradorForm = ({ onSuccess, colaboradorSeleccionado, limpiarSeleccion 
         await addColaborador(form);
         toast.success('Colaborador agregado con éxito.');
       }
+      // Reinicia el formulario
       setForm({ nombre: '', apellido: '', direccion: '', edad: '', profesion: '', estadoCivil: '' });
       onSuccess(); // Actualiza la tabla
     } catch (error) {
-      toast.error('Error al guardar el colaborador.');
+      toast.error('Error al guardar el colaborador.'); // Manejo de errores
     }
   };
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import { toast } from 'sonner';
 import { deleteColaborador } from '../api/colaboradorApi';
-
+// Componente para mostrar la tabla de colaboradores
 const ColaboradorTable = ({ colaboradores, onDelete, onEdit, onRiesgo }) => {
+  // Maneja la eliminación de un colaborador
   const handleDelete = async (id) => {
     try {
       await deleteColaborador(id);
@@ -12,7 +13,7 @@ const ColaboradorTable = ({ colaboradores, onDelete, onEdit, onRiesgo }) => {
       toast.error('Error al eliminar colaborador.');
     }
   };
-
+  // Maneja el nivel de riesgo según la edad
   const handleRiesgo = (edad) => {
     if (edad && edad > 0) {
       let mensaje = '';
